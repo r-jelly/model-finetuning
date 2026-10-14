@@ -37,7 +37,7 @@ def check_environment():
     model = T5ForConditionalGeneration(config)
     loss = model(input_ids=torch.ones(1, 8, dtype=torch.long), labels=torch.tensor([[2, 3, 1, -100]])).loss
     assert torch.isfinite(loss)
-    score = rouge_scorer.RougeScorer(["rougeL"], use_stemmer=False).score("a cat runs", "a cat runs")
+    score = rouge_scorer.RougeScorer(["rougeL"], use_stemmer=True).score("a cat runs", "a cat runs")
     assert score["rougeL"].fmeasure == 1.0
     print("Environment OK. TODO 학습 로직은 아직 검증하지 않았습니다.")
 

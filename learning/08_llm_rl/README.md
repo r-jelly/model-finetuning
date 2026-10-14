@@ -1,7 +1,7 @@
 # 08 · 작은 LLM의 산술 답변: SFT → GRPO
 
 모델: Qwen/Qwen2.5-0.5B-Instruct. LoRA r=8, alpha=16, target_modules=q_proj/v_proj로 시작합니다.
-데이터: 0~31의 두 수 덧셈 528개. 교환법칙 중복(a,b)/(b,a)을 제거하고 seed=42로 train400/validation64/test64를 나눕니다.
+데이터: 10~99의 두 수 곱셈 4,095개. 교환법칙 중복(a,b)/(b,a)을 제거하고 seed=42로 train2000/validation500/test500을 나눕니다.
 `arithmetic.py`에 데이터 분할과 엄격한 정답 보상이 제공돼 있습니다. 외부 데이터나 reward model은 필요 없습니다.
 
 ## 순서
@@ -17,14 +17,16 @@ test는 설정 선택에 사용하지 않습니다. outputs 또는 checkpoint에
 
 ## 시작 설정과 완료 조건
 
-SFT 첫 세션 약 4시간, GRPO 연결·분석은 별도 약 4시간. 실행 시간은 아직 측정하지 않았습니다.
+SFT 첫 세션 약 4시간, GRPO 연결·분석은 별도 약 4시간. 실행 시간 실측: SFT 50 step 약 30초, GRPO 1 step 약 0.4초.
 SFT: batch=1, accumulation=4, max_length=128, max_steps=50, lr=1e-4, completion_only_loss=True.
-GRPO: batch=2, num_generations=2, accumulation=2, max_completion_length=8, max_steps=20, lr=5e-6, beta=0, use_vllm=False.
+GRPO: batch=8, num_generations=8, accumulation=2, max_completion_length=8, max_steps=200, beta=0, use_vllm=False. lr은 5e-6과 5e-5를 validation으로 비교해 고릅니다.
 BF16 지원 GPU에서는 bf16=True, gradient checkpointing=True, report_to='none', push_to_hub=False.
+gradient checkpointing을 켠 채 train 모드로 생성하면 출력이 깨집니다. 평가 전에 model.eval()을 호출하세요.
 optimizer step=2의 작은 실행부터 시작하고, GPU 최대 메모리를 확인한 뒤 위 예산으로 늘립니다.
-생성 2개 모두 항상 정답이거나 항상 오답이면 상대적 보상 신호가 없습니다. 학습 전에 reward 분포와 그룹 내 차이를 확인하세요.
+같은 요청의 생성 8개가 모두 같은 reward면 상대적 보상 신호가 없습니다. 학습 전에 reward 분포와 그룹 내 차이를 확인하세요.
 문제가 너무 쉽다면 피연산자 범위를 늘리고 분할을 처음부터 다시 고정하세요. test 결과를 보고 난 뒤 조정했다면 새 test가 필요합니다.
 정답률·평균 reward·그룹 내 reward 차이가 있는 비율·출력 길이·최대 GPU 메모리를 기록합니다.
+GRPO 전후에는 pass@8(샘플 8개 중 하나라도 정답인 비율)도 비교합니다.
 
 ## 실행
 

@@ -18,11 +18,11 @@ uv run python learning/01_mnist/exercise.py --check
 | 01_mnist | 처음부터 task 학습 | MLP/CNN · MNIST | MLP vs CNN |
 | 02_sentiment | 분류 파인튜닝 | DistilBERT · SST-2 | frozen/full/LoRA |
 | 03_summarization | 생성 파인튜닝 | T5-small · XSum | 원본/첫 문장/학습 후 |
-| 04_retrieval | 검색 파인튜닝 | MiniLM · MS MARCO 일부 | 원본 vs 대조 학습 |
+| 04_retrieval | 검색 파인튜닝 | MiniLM · SciFact | 원본 vs 대조 학습 |
 | 05_question_answering | 정답 구간 추출 | DistilBERT · SQuAD | 자르기 vs 겹치는 구간 |
 | 06_continued_pretraining | 추가 원문 학습 | GPT-2 · WikiText-2 | padding vs packing |
-| 07_cartpole | 기본 RL | Q-table/MLP · CartPole | random → Q-learning → PPO |
-| 08_llm_rl | LLM post-training | Qwen2.5-0.5B-Instruct · 합성 덧셈 | 원본 → SFT → GRPO |
+| 07_cartpole | 기본 RL | MLP · CartPole | random → REINFORCE → PPO |
+| 08_llm_rl | LLM post-training | Qwen2.5-0.5B-Instruct · 합성 곱셈 | 원본 → SFT → GRPO |
 
 ## 한 과제를 끝내는 순서
 
@@ -56,4 +56,4 @@ report_to='none', push_to_hub=False로 시작하며 외부 로깅·업로드는 
 11개 단계의 오프라인 환경/API 확인, 지원 코드 테스트 4개, 패키지 의존성 확인을 통과했습니다.
 RTX 4070 Ti의 작은 LoRA 학습 단계와 bitsandbytes NF4 연산도 통과했습니다.
 CartPole 랜덤 정책은 validation seed 10개에서 평균 return 23.0을 확인했습니다.
-이는 환경 기준선이며 아직 Q-learning/PPO나 실제 모델 학습의 결과는 아닙니다.
+이는 환경 기준선이며 아직 REINFORCE/PPO나 실제 모델 학습의 결과는 아닙니다.

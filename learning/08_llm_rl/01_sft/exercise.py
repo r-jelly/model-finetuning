@@ -5,8 +5,8 @@ from pathlib import Path
 import sys
 import torch
 from datasets import Dataset
-from transformers import AutoTokenizer, AutoModelForCausalLM
-from peft import LoraConfig, TaskType, get_peft_model
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from peft import LoraConfig, TaskType, get_peft_model, prepare_model_for_kbit_training
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from arithmetic import make_splits, exact_reward
 from trl import SFTConfig, SFTTrainer
@@ -23,8 +23,8 @@ def load_model():
 
 
 def evaluate(model, tokenizer, rows):
-    """TODO: greedy 생성의 입력 prefix를 제외한 completion을 exact_reward로 평가하세요."""
-    raise NotImplementedError('greedy 생성의 입력 prefix를 제외한 completion을 exact_reward로 평가하세요.')
+    """TODO: model.eval() 후 greedy 생성의 입력 prefix를 제외한 completion을 exact_reward로 평가하세요."""
+    raise NotImplementedError('model.eval() 후 greedy 생성의 입력 prefix를 제외한 completion을 exact_reward로 평가하세요.')
 
 
 def train(model, tokenizer, rows):
@@ -34,10 +34,11 @@ def train(model, tokenizer, rows):
 
 def check_environment():
     splits = make_splits()
-    assert [len(splits[k]) for k in ("train", "validation", "test")] == [400, 64, 64]
+    assert [len(splits[k]) for k in ("train", "validation", "test")] == [2000, 500, 500]
     config = SFTConfig(output_dir=str(CHECKPOINT_DIR), max_steps=2, per_device_train_batch_size=1, gradient_accumulation_steps=4, max_length=128, completion_only_loss=True, report_to="none", push_to_hub=False, bf16=torch.cuda.is_available() and torch.cuda.is_bf16_supported())
     assert config.max_length == 128 and config.completion_only_loss
     assert exact_reward(["3", "wrong"], [3, 3]) == [1.0, 0.0]
+    assert BitsAndBytesConfig(load_in_4bit=True, bnb_4bit_quant_type="nf4", bnb_4bit_compute_dtype=torch.bfloat16).load_in_4bit
     print("Environment OK. TODO 학습 로직은 아직 검증하지 않았습니다.")
 
 

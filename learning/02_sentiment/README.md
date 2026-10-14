@@ -8,7 +8,7 @@
 
 ## 직접 작성할 순서
 
-1. train을 섞어 3,000개를 고정하고 학습 2,000개·검증 500개·최종 평가 500개로 나눕니다. 공식 test의 label=-1은 사용하지 않습니다.
+1. train을 seed=42로 섞어 학습 2,000개·검증 500개를 고정하고, 공식 validation 872문장을 최종 평가로 씁니다. train은 구(phrase) 위주, validation은 완전한 문장입니다. 공식 test의 label=-1은 사용하지 않습니다.
 2. `prepare_data()`에서 AutoTokenizer, 최대 길이 128, DataCollatorWithPadding을 연결합니다.
 3. `build_model()`에서 frozen 모드를 먼저 작성합니다. 인코더는 동결하고 pre_classifier/classifier는 학습합니다.
 4. `train()`과 `evaluate()`를 연결하고 full 모드를 같은 조건에서 비교합니다.
@@ -30,7 +30,7 @@ TODO 함수는 `NotImplementedError`로 멈춥니다. 구현 후 다시 실행�
 
 ## 실험 범위
 
-시작 설정: batch=8, 2 epochs. full/lora lr=2e-5, frozen head lr=1e-3. 모드별 학습률 차이를 기록하세요. report_to="none", push_to_hub=False.
+시작 설정: batch=8, 2 epochs. 모드마다 lr 3개 중 하나를 검증 데이터로 고릅니다: frozen {3e-4, 1e-3, 3e-3}, full {1e-5, 2e-5, 5e-5}, lora {1e-4, 5e-4, 1e-3}. LoRA는 full보다 큰 lr이 필요합니다(LoRA 논문 SST-2: 5e-4). report_to="none", push_to_hub=False.
 
 ## 공식 자료
 

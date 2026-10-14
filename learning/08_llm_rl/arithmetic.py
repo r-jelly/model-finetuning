@@ -5,16 +5,16 @@ import re
 
 def make_splits():
     rows = []
-    for a in range(32):
-        for b in range(a, 32):
+    for a in range(10, 100):
+        for b in range(a, 100):
             rows.append({
-                "id": f"{a}+{b}",
-                "prompt": [{"role": "user", "content": f"What is {a} + {b}? Reply with only one integer."}],
-                "completion": [{"role": "assistant", "content": str(a + b)}],
-                "answer": a + b,
+                "id": f"{a}*{b}",
+                "prompt": [{"role": "user", "content": f"What is {a} * {b}? Reply with only one integer."}],
+                "completion": [{"role": "assistant", "content": str(a * b)}],
+                "answer": a * b,
             })
     random.Random(42).shuffle(rows)
-    return {"train": rows[:400], "validation": rows[400:464], "test": rows[464:]}
+    return {"train": rows[:2000], "validation": rows[2000:2500], "test": rows[2500:3000]}
 
 
 def exact_reward(completions, answer, **kwargs):

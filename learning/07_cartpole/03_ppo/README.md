@@ -6,7 +6,7 @@
 2. rollout을 수집합니다. old logprob/value는 계산 그래프 없이 저장합니다.
 3. GAE를 작성하고 짧은 수동 계산 예제와 비교합니다. advantages/returns는 detach합니다.
 4. PPO loss를 작성합니다. old=new이면 ratio=1인지 확인하고 policy/value/entropy를 따로 기록합니다.
-5. 총 환경 step 50,000회로 학습한 뒤 Q-learning과 같은 seed·평가 방식으로 비교합니다.
+5. 총 환경 step 50,000회로 학습한 뒤 REINFORCE와 같은 seed·평가 방식으로 비교합니다.
 
 terminated: bootstrap=0, GAE 재귀=0.
 truncated: 마지막 실제 관측으로 bootstrap, GAE 재귀=0.

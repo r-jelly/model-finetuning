@@ -31,6 +31,7 @@ TODO 함수는 `NotImplementedError`로 멈춥니다. 구현 후 다시 실행�
 ## 실험 범위
 
 시작 설정: batch=2, gradient accumulation=4, lr=5e-5, max_steps=100, max_new_tokens=64. 전체 XSum 벤치마크 점수로 해석하지 않습니다.
+T5는 fp16에서 overflow로 loss가 NaN이 될 수 있어 bf16 또는 fp32로 학습합니다. ROUGE는 use_stemmer=True로 계산합니다.
 
 ## 공식 자료
 

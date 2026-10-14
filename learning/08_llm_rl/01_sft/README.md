@@ -6,3 +6,4 @@ SFTConfig: batch1, accumulation4, max_length128, lr1e-4, gradient_checkpointing=
 completion_only_loss=True로 요청 토큰에 대한 loss를 제외합니다. 동일한 chat template을 평가에도 적용합니다.
 전체 모델 대신 LoRA adapter를 학습하고 CHECKPOINT_DIR에 저장하세요. 원본 모델을 저장하는 것으로 혼동하지 마세요.
 원본/SFT 정답률과 최대 GPU 메모리를 results.md에 기록하세요.
+선택: `Qwen/Qwen2.5-1.5B-Instruct`를 BitsAndBytesConfig(4비트 nf4)와 prepare_model_for_kbit_training으로 불러 같은 SFT를 반복하고 정답률·최대 GPU 메모리를 비교합니다. 이 adapter는 GRPO에 쓰지 않으므로 CHECKPOINT_DIR 밖에 저장합니다.

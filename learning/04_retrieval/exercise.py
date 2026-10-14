@@ -5,13 +5,13 @@ from pathlib import Path
 import torch
 from datasets import load_dataset
 from sentence_transformers import SentenceTransformer, losses, SentenceTransformerTrainer, SentenceTransformerTrainingArguments
+from sentence_transformers.training_args import BatchSamplers
 
 SEED = 42
 MODEL_ID = "sentence-transformers/all-MiniLM-L6-v2"
-DATASET_ID = "microsoft/ms_marco"
-DATASET_CONFIG = "v1.1"
-MAX_SEQ_LENGTH = 128
-BATCH_SIZE = 8
+DATASET_ID = "mteb/scifact"
+MAX_SEQ_LENGTH = 256
+BATCH_SIZE = 32
 ROOT = Path(__file__).resolve().parents[2]
 OUTPUT_DIR = ROOT / "outputs/04_retrieval"
 
@@ -32,7 +32,7 @@ def train(model, pairs):
 
 def check_environment():
     assert losses.MultipleNegativesRankingLoss is not None
-    assert SentenceTransformerTrainer is not None
+    assert SentenceTransformerTrainer is not None and BatchSamplers.NO_DUPLICATES
     vectors = torch.nn.functional.normalize(torch.tensor([[1., 0.], [0., 1.]]), dim=1)
     assert torch.allclose(vectors @ vectors.T, torch.eye(2))
     print("Environment OK. TODO 학습 로직은 아직 검증하지 않았습니다.")

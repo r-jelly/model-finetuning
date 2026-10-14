@@ -78,5 +78,5 @@ uv run python scripts/check_learning_templates.py
 uv run python -m unittest discover -s tests -v
 ```
 
-CartPole은 random → Q-learning → PPO, LLM은 SFT → GRPO 단계 폴더로 나뉩니다.
+CartPole은 random → REINFORCE → PPO, LLM은 SFT → GRPO 단계 폴더로 나뉩니다.
 환경 확인은 다운로드 없이 실행합니다. 실제 모델·데이터는 각 과제를 시작할 때 받습니다.

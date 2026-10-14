@@ -19,8 +19,8 @@ ROOT = Path(__file__).resolve().parents[2]
 OUTPUT_DIR = ROOT / "outputs/02_sentiment"
 
 def prepare_data():
-    """TODO: 학습2000/검증500/평가500 데이터셋과 tokenizer를 반환하세요."""
-    raise NotImplementedError('학습2000/검증500/평가500 데이터셋과 tokenizer를 반환하세요.')
+    """TODO: train에서 학습2000/검증500, 공식 validation에서 평가872 데이터셋과 tokenizer를 반환하세요."""
+    raise NotImplementedError('train에서 학습2000/검증500, 공식 validation에서 평가872 데이터셋과 tokenizer를 반환하세요.')
 
 
 def build_model(mode):

@@ -17,8 +17,8 @@ ROOT = Path(__file__).resolve().parents[3]
 SFT_CHECKPOINT = ROOT / "checkpoints/08_llm_rl/sft"
 OUTPUT_DIR = ROOT / "outputs/08_llm_rl/grpo"
 SEED = 42
-MAX_STEPS = 20
-NUM_GENERATIONS = 2
+MAX_STEPS = 200
+NUM_GENERATIONS = 8
 
 def load_sft_model():
     """TODO: 원본 모델에 저장된 SFT adapter를 is_trainable=True로 로드하고 tokenizer도 반환하세요."""
@@ -26,8 +26,8 @@ def load_sft_model():
 
 
 def inspect_rewards(model, tokenizer, rows):
-    """TODO: 학습 전에 요청별 2개 답변을 생성해 평균 보상과 그룹 내 보상 차이를 확인하세요."""
-    raise NotImplementedError('학습 전에 요청별 2개 답변을 생성해 평균 보상과 그룹 내 보상 차이를 확인하세요.')
+    """TODO: 학습 전에 요청별 NUM_GENERATIONS개 답변을 생성해 평균 보상과 그룹 내 보상 차이를 확인하세요."""
+    raise NotImplementedError('학습 전에 요청별 NUM_GENERATIONS개 답변을 생성해 평균 보상과 그룹 내 보상 차이를 확인하세요.')
 
 
 def train(model, tokenizer, rows):
@@ -36,13 +36,13 @@ def train(model, tokenizer, rows):
 
 
 def evaluate(model, tokenizer, rows):
-    """TODO: SFT와 같은 greedy 생성으로 미학습 문제의 정답률을 반환하세요."""
-    raise NotImplementedError('SFT와 같은 greedy 생성으로 미학습 문제의 정답률을 반환하세요.')
+    """TODO: model.eval() 후 SFT와 같은 greedy 생성으로 미학습 문제의 정답률을 반환하세요."""
+    raise NotImplementedError('model.eval() 후 SFT와 같은 greedy 생성으로 미학습 문제의 정답률을 반환하세요.')
 
 
 def check_environment():
-    config = GRPOConfig(output_dir=str(OUTPUT_DIR), max_steps=2, per_device_train_batch_size=2, gradient_accumulation_steps=2, num_generations=NUM_GENERATIONS, max_completion_length=8, use_vllm=False, beta=0.0, report_to="none", push_to_hub=False, bf16=torch.cuda.is_available() and torch.cuda.is_bf16_supported())
-    assert config.num_generations == 2 and not config.use_vllm
+    config = GRPOConfig(output_dir=str(OUTPUT_DIR), max_steps=2, per_device_train_batch_size=8, gradient_accumulation_steps=2, num_generations=NUM_GENERATIONS, max_completion_length=8, use_vllm=False, beta=0.0, report_to="none", push_to_hub=False, bf16=torch.cuda.is_available() and torch.cuda.is_bf16_supported())
+    assert config.num_generations == NUM_GENERATIONS and not config.use_vllm
     assert exact_reward([[{"role": "assistant", "content": "3"}]], [3]) == [1.0]
     print("Environment OK. TODO 학습 로직은 아직 검증하지 않았습니다.")
 

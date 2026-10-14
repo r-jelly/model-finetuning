@@ -18,8 +18,8 @@ ROOT = Path(__file__).resolve().parents[2]
 OUTPUT_DIR = ROOT / "outputs/05_question_answering"
 
 def prepare_data():
-    """TODO: context 단위의学習/검증/평가 질문と tokenizer를 반환하세요."""
-    raise NotImplementedError('context 단위의学習/검증/평가 질문と tokenizer를 반환하세요.')
+    """TODO: context 단위의 학습/검증/평가 질문과 tokenizer를 반환하세요."""
+    raise NotImplementedError('context 단위의 학습/검증/평가 질문과 tokenizer를 반환하세요.')
 
 
 def tokenize_examples(examples, tokenizer):
