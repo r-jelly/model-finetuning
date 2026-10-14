@@ -1,0 +1,38 @@
+[project]
+name = "model-finetuning"
+version = "0.1.0"
+description = "Model fine-tuning workspace with PyTorch and Hugging Face"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "torch",
+    "torchvision",
+    "torchaudio",
+    "transformers",
+    "datasets",
+    "accelerate",
+    "peft",
+    "trl",
+    "huggingface-hub",
+    "safetensors",
+    "sentencepiece",
+    "protobuf",
+    "bitsandbytes",
+    "gymnasium[classic-control]>=1.4.0",
+    "sentence-transformers>=5.7.0",
+    "scikit-learn>=1.9.1",
+    "rouge-score>=0.1.2",
+    "matplotlib>=3.11.2",
+]
+
+[dependency-groups]
+dev = ["ipykernel", "jupyterlab"]
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchvision = { index = "pytorch-cu128" }
+torchaudio = { index = "pytorch-cu128" }
