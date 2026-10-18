@@ -19,7 +19,25 @@ LEARNING_RATE = 1e-3
 
 def prepare_data():
     """TODO: 학습/검증/평가 DataLoader 세 개를 반환하세요."""
-    raise NotImplementedError('학습/검증/평가 DataLoader 세 개를 반환하세요.')
+    # raise NotImplementedError('학습/검증/평가 DataLoader 세 개를 반환하세요.')
+    train_data_all = datasets.MNIST(
+        root=DATA_DIR, 
+        train=True,
+        download=True,
+        transform=transforms.ToTensor()
+    )
+    test_data = datasets.MNIST(
+        root=DATA_DIR,
+        train=False,
+        download=True,
+        transform=transforms.ToTensor()
+    )
+
+    indices = torch.randint(0, 60000, (6000,))
+    train_data = Subset(train_data_all, indices=indices[:5000])
+    valid_data = Subset(train_data_all, indices=indices[5000:])
+    
+    
 
 
 def build_model(kind):
