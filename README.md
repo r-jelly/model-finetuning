@@ -13,6 +13,7 @@ source .venv/bin/activate
 가상환경을 활성화하지 않아도 `uv run`으로 실행할 수 있습니다.
 `pyproject.toml`은 의존성과 CUDA 인덱스를, `uv.lock`은 설치 버전을 관리합니다.
 Python 3.12.12를 사용하며 PyTorch는 공식 CUDA 12.8 인덱스에서 설치합니다.
+macOS에서는 CUDA가 없으므로 PyPI의 torch(MPS/CPU)를 설치하며, 이 때문에 macOS의 torch 버전이 GPU 머신과 다를 수 있습니다.
 
 ## 설치된 도구
 
