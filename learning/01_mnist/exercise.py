@@ -33,13 +33,13 @@ def prepare_data():
         transform=transforms.ToTensor()
     )
 
-    indices = torch.randint(0, 60000, (6000,))
+    indices = torch.randperm(60000)
     train_data = Subset(train_data_all, indices=indices[:5000])
-    valid_data = Subset(train_data_all, indices=indices[5000:])
-    test_data = Subset(test_data, indices=torch.randint(0, 10000, (1000,)))
+    valid_data = Subset(train_data_all, indices=indices[5000:6000])
+    test_data = Subset(test_data, indices=torch.randperm(10000)[:1000])
 
     train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True)
-    validation_loader = DataLoader(valid_data, batch_size=BATCH_SIZE, shuffle=True)
+    validation_loader = DataLoader(valid_data, batch_size=BATCH_SIZE, shuffle=False)
     test_loader = DataLoader(test_data, batch_size=BATCH_SIZE, shuffle=False)
     return train_loader, validation_loader, test_loader
     
@@ -57,10 +57,12 @@ def build_model(kind):
         )
     elif kind == "cnn":
         model = nn.Sequential(
-            nn.Conv2d(in_channels=1, out_channels=16, kernel_size=3, stride=1, padding=1),
-            nn.MaxPool2d(kernel_size=2),
-            nn.Conv2d(in_channels=16, out_channels=32, kernel_size=3, stride=1, padding=1),
-            nn.MaxPool2d(kernel_size=2),
+            nn.Conv2d(in_channels=1, out_channels=16, kernel_size=3, stride=1, padding=1), # [B,1,28,28] -> [B,16,28,28]
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2), # [B,16,28,28] -> [B,16,14,14]
+            nn.Conv2d(in_channels=16, out_channels=32, kernel_size=3, stride=1, padding=1), # [B,16,14,14] -> [B,32,14,14]
+            nn.ReLU(),
+            nn.MaxPool2d(kernel_size=2), # [B,32,14,14] -> [B,32,7,7]
             nn.Flatten(),
             nn.Linear(in_features=32*7*7, out_features=256),
             nn.ReLU(),
@@ -76,7 +78,7 @@ def train(model, loader, optimizer, loss_fn):
         epoch_loss = 0.0
         for X, y in loader:
             optimizer.zero_grad()
-            logits = model.forward(X)
+            logits = model(X)
             loss = loss_fn(logits, y)
             loss.backward()
             optimizer.step()
@@ -92,7 +94,7 @@ def evaluate(model, loader):
     true = []
     with torch.no_grad():
         for X, y in loader:
-            logits = model.forward(X)
+            logits = model(X)
             pred = logits.argmax(dim=-1)
             all_X.append(X)
             prediction.append(pred)
@@ -119,7 +121,7 @@ def main():
     torch.manual_seed(SEED)
     train_loader, validation_loader, test_loader = prepare_data()
     model = build_model(MODEL_KIND).to(DEVICE)
-    optimizer = torch.optim.AdamW(model.parameters(), lr=LEARNING_RATE)
+    optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
     loss_fn = nn.CrossEntropyLoss()
     train(model, train_loader, optimizer, loss_fn)
     print("validation", evaluate(model, validation_loader))
