@@ -77,6 +77,7 @@ def train(model, loader, optimizer, loss_fn):
     for epoch in range(EPOCHS):
         epoch_loss = 0.0
         for X, y in loader:
+            X, y = X.to(DEVICE), y.to(DEVICE)
             optimizer.zero_grad()
             logits = model(X)
             loss = loss_fn(logits, y)
@@ -94,6 +95,7 @@ def evaluate(model, loader):
     true = []
     with torch.no_grad():
         for X, y in loader:
+            X, y = X.to(DEVICE), y.to(DEVICE)
             logits = model(X)
             pred = logits.argmax(dim=-1)
             all_X.append(X)
@@ -104,7 +106,7 @@ def evaluate(model, loader):
     prediction = torch.cat(prediction)
     true = torch.cat(true)
     accuracy = (prediction == true).sum() / len(prediction)
-    conf_matrix = confusion_matrix(true.numpy(), prediction.numpy())
+    conf_matrix = confusion_matrix(true.cpu().numpy(), prediction.cpu().numpy())
     wrong_answer = all_X[prediction != true]
     return accuracy, conf_matrix, wrong_answer
 
