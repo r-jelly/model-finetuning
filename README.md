@@ -70,7 +70,7 @@ VS Code에서 노트북을 열 경우 `.venv/bin/python`을 인터프리터로 �
 
 ## 직접 작성하는 학습 과제
 
-[학습 시작 안내](learning/README.md)에서 8개 과제와 실행 순서를 확인하세요.
+[학습 시작 안내](learning/README.md)에서 9개 과제와 실행 순서를 확인하세요.
 각 과제의 exercise.py는 TODO 템플릿이며, 학습 로직은 직접 구현합니다.
 
 ```bash
@@ -79,5 +79,5 @@ uv run python scripts/check_learning_templates.py
 uv run python -m unittest discover -s tests -v
 ```
 
-CartPole은 random → REINFORCE → PPO, LLM은 SFT → GRPO 단계 폴더로 나뉩니다.
+CartPole은 random → REINFORCE → PPO, LLM은 SFT → GRPO, 증류는 hard label → soft label → on-policy 단계 폴더로 나뉩니다.
 환경 확인은 다운로드 없이 실행합니다. 실제 모델·데이터는 각 과제를 시작할 때 받습니다.

@@ -1,7 +1,7 @@
 # 학습 과제 · 현재 시작 전
 
 환경은 루트의 uv .venv 하나를 공유합니다. 아래 폴더가 독립적인 과제입니다.
-7번과 8번은 내부에 단계 폴더가 있습니다. 학습 해답은 제공하지 않고 TODO 함수로 남겼습니다.
+7~9번은 내부에 단계 폴더가 있습니다. 학습 해답은 제공하지 않고 TODO 함수로 남겼습니다.
 
 ## 첫 행동 · 10분
 
@@ -23,6 +23,7 @@ uv run python learning/01_mnist/exercise.py --check
 | 06_continued_pretraining | 추가 원문 학습 | GPT-2 · WikiText-2 | padding vs packing |
 | 07_cartpole | 기본 RL | MLP · CartPole | random → REINFORCE → PPO |
 | 08_llm_rl | LLM post-training | Qwen2.5-0.5B-Instruct · 합성 곱셈 | 원본 → SFT → GRPO |
+| 09_distillation | 지식 증류 | Qwen2.5 1.5B → 0.5B · GSM8K | hard label → soft label → on-policy |
 
 ## 한 과제를 끝내는 순서
 
@@ -56,7 +57,7 @@ uv pip check
 
 --check는 외부 모델/데이터를 다운로드하지 않고 패키지·작은 모델 forward·설정 API만 확인합니다.
 --run은 아직 작성하지 않은 함수에서 NotImplementedError로 멈춥니다.
-전체 데이터셋과 모델 다운로드, 8개 과제의 실제 학습·GPU 메모리 검증은 아직 하지 않았습니다.
+전체 데이터셋과 모델 다운로드, 9개 과제의 실제 학습·GPU 메모리 검증은 아직 하지 않았습니다.
 RL 지원 코드의 데이터 분할·보상 함수는 tests에서 검증합니다.
 데이터/모델은 각 과제를 시작할 때 다운로드하며 Hugging Face 기본 cache를 공유합니다.
 report_to='none', push_to_hub=False로 시작하며 외부 로깅·업로드는 사용하지 않습니다.

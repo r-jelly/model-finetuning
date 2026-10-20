@@ -9,6 +9,9 @@ ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location("arithmetic", ROOT / "learning/08_llm_rl/arithmetic.py")
 arithmetic = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(arithmetic)
+spec = importlib.util.spec_from_file_location("gsm8k", ROOT / "learning/09_distillation/gsm8k.py")
+gsm8k = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(gsm8k)
 
 
 class ArithmeticTests(unittest.TestCase):
@@ -33,6 +36,20 @@ class ArithmeticTests(unittest.TestCase):
     def test_mismatched_reward_batch_fails(self):
         with self.assertRaises(ValueError):
             arithmetic.exact_reward(["3"], [])
+
+
+class Gsm8kRewardTests(unittest.TestCase):
+    def test_reward_reads_only_final_answer_line(self):
+        texts = ["2 + 3 = 5\n#### 72", "#### 72.", "####72\n", "#### 7,2", "#### 73", "The answer is 72", "#### 72\nDone.", "#### 72 apples", "#### 72.5", "", None]
+        self.assertEqual(gsm8k.exact_reward(texts, [72] * len(texts)), [1., 1., 1., 1., 0., 0., 0., 0., 0., 0., 0.])
+        self.assertEqual(gsm8k.exact_reward(["#### 1,000", "#### -5", [{"role": "assistant", "content": "#### 3"}], []], [1000, -5, 3, 3]), [1., 1., 1., 0.])
+
+    def test_gold_answer_format_parses(self):
+        self.assertEqual(gsm8k.extract_answer("Natalia sold 48+24 = <<48+24=72>>72 clips.\n#### 72"), 72)
+
+    def test_mismatched_reward_batch_fails(self):
+        with self.assertRaises(ValueError):
+            gsm8k.exact_reward(["#### 3"], [])
 
 
 class RandomPolicyTests(unittest.TestCase):
