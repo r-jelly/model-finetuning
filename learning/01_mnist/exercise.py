@@ -37,8 +37,8 @@ def prepare_data():
     )
 
     indices = torch.randperm(60000)
-    train_data = Subset(train_data_all, indices=indices[:5000])
-    valid_data = Subset(train_data_all, indices=indices[5000:6000])
+    train_data = Subset(train_data_all, indices=indices[:8000])
+    valid_data = Subset(train_data_all, indices=indices[8000:9000])
     test_data = Subset(test_data, indices=torch.randperm(10000)[:1000])
 
     train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True)
@@ -52,9 +52,11 @@ def build_model(kind):
     if kind == "mlp":
         model = nn.Sequential(
             nn.Flatten(), # 입력 [B, 1, 28, 28] -> [B, 784]
-            nn.Linear(28*28, 256),
+            nn.Linear(28*28, 400),
             nn.ReLU(),
-            nn.Linear(256, 128),
+            nn.Linear(400, 200),
+            nn.ReLU(),
+            nn.Linear(200, 128),
             nn.ReLU(),
             nn.Linear(128, 10)
         )
@@ -148,7 +150,7 @@ def save_results(train_losses, results):
     """
     # raise NotImplementedError('OUTPUT_DIR / RUN_NAME 아래에 metrics.json과 predictions.jsonl을 저장하세요.')
     metrics = {
-        "config": {"model_kind": MODEL_KIND, "seed": SEED, "batch_size": BATCH_SIZE, "epochs": EPOCHS, "lerning_rate": LEARNING_RATE},
+        "config": {"model_kind": MODEL_KIND, "seed": SEED, "batch_size": BATCH_SIZE, "epochs": EPOCHS, "learning_rate": LEARNING_RATE},
         "train_losses": train_losses
     }
     predictions = []
