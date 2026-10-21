@@ -12,7 +12,9 @@
 2. `build_model()`에서 MLP부터 작성합니다. 입력 [B,1,28,28], 출력 logits [B,10]. CrossEntropyLoss 앞에 softmax를 넣지 않습니다.
 3. `train()`을 작성하고 학습 32장만 반복해 암기 가능한지 먼저 확인합니다.
 4. `evaluate()`는 eval 모드와 no_grad로 정확도·혼동행렬·틀린 이미지 20장을 반환합니다.
-5. CNN으로 모델만 바꿔 같은 데이터·epoch·평가에서 비교하고 results.md를 채웁니다.
+5. `save_checkpoint()`·`check_reload()`로 모델을 저장하고 다시 불러와 정확도가 같은지 확인합니다. `save_results()`로 `metrics.json`·`predictions.jsonl`을 저장합니다.
+6. `notebooks/01_mnist.ipynb`의 TODO 셀에서 학습 곡선·혼동행렬·오답 20장을 그립니다.
+7. CNN으로 모델만 바꿔 같은 데이터·epoch·평가에서 비교하고 results.md를 채웁니다.
 
 ## 평가와 완료 조건
 
