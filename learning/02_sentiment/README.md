@@ -12,7 +12,9 @@
 2. `prepare_data()`에서 AutoTokenizer, 최대 길이 128, DataCollatorWithPadding을 연결합니다.
 3. `build_model()`에서 frozen 모드를 먼저 작성합니다. 인코더는 동결하고 pre_classifier/classifier는 학습합니다.
 4. `train()`과 `evaluate()`를 연결하고 full 모드를 같은 조건에서 비교합니다.
-5. lora 모드에서 target_modules=[q_lin,v_lin], r=8, alpha=16, modules_to_save=[pre_classifier,classifier]를 사용해 비용도 비교합니다.
+5. `train()`의 TrainingArguments TODO를 고치고 `main()`에서 학습 파라미터 수·시간·최대 GPU 메모리를 잽니다. `train()` 끝에서 `trainer.save_model()`로 저장하고 `check_reload()`로 다시 불러와 정확도가 같은지 확인하고, `save_results()`로 `metrics.json`·`predictions.jsonl`을 저장합니다.
+6. lora 모드에서 target_modules=[q_lin,v_lin], r=8, alpha=16, modules_to_save=[pre_classifier,classifier]를 사용해 비용도 비교합니다.
+7. 모드 3개 × lr 3개를 실행한 뒤 `notebooks/02_sentiment.ipynb`의 TODO 셀에서 실행 비교표·학습 곡선·혼동행렬·확신하고 틀린 문장·모드 간 paired bootstrap을 보고 results.md를 채웁니다.
 
 ## 평가와 완료 조건
 
