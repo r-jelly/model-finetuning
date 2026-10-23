@@ -4,7 +4,8 @@ from pathlib import Path
 
 import torch
 from datasets import load_dataset
-from sentence_transformers import SentenceTransformer, losses, SentenceTransformerTrainer, SentenceTransformerTrainingArguments
+from sentence_transformers import SentenceTransformer, SentenceTransformerTrainer, SentenceTransformerTrainingArguments
+from sentence_transformers.sentence_transformer import losses
 from sentence_transformers.base.sampler import BatchSamplers
 
 SEED = 42
