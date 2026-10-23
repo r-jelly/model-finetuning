@@ -5,7 +5,7 @@ from pathlib import Path
 import torch
 from datasets import load_dataset
 from sentence_transformers import SentenceTransformer, losses, SentenceTransformerTrainer, SentenceTransformerTrainingArguments
-from sentence_transformers.training_args import BatchSamplers
+from sentence_transformers.base.sampler import BatchSamplers
 
 SEED = 42
 MODEL_ID = "sentence-transformers/all-MiniLM-L6-v2"
